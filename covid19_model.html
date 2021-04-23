@@ -63542,6 +63542,10 @@ to transmit
   [
     set infect-rate infectiousness * (1 - mask-efficacy / 100 )
   ]
+  if state = "asymptomatic"
+  [
+    set infect-rate (infect-rate * asymptomatic-infection-ratio / 100)
+  ]
   if locked? = false and isolated? = false
   [
     ask other turtles in-radius 1 with [ state = "susceptible" ]
@@ -63706,7 +63710,7 @@ population
 population
 2
 2000
-110.0
+522.0
 1
 1
 NIL
@@ -63721,7 +63725,7 @@ age-0-19-infectiousness
 age-0-19-infectiousness
 0
 100
-17.0
+49.0
 1
 1
 %
@@ -63828,7 +63832,7 @@ true
 false
 "" ""
 PENS
-"default" 1.0 2 -16777216 true "" "plot infected-daily"
+"default" 1.0 0 -16777216 true "" "plot infected-daily"
 
 SLIDER
 36
@@ -63856,20 +63860,20 @@ Epidemiological Parameters
 1
 
 TEXTBOX
-60
-608
-210
-626
+40
+649
+190
+667
 Mitigation Methods
 11
 0.0
 1
 
 SWITCH
-35
-631
-173
-664
+362
+629
+500
+662
 quarantine
 quarantine
 1
@@ -63877,10 +63881,10 @@ quarantine
 -1000
 
 SLIDER
-361
-672
-629
-705
+686
+707
+954
+740
 vaccination-speed
 vaccination-speed
 0
@@ -63923,9 +63927,9 @@ HORIZONTAL
 
 SLIDER
 35
-526
+563
 243
-559
+596
 incubation-period
 incubation-period
 0
@@ -63938,9 +63942,9 @@ HORIZONTAL
 
 SLIDER
 35
-565
+602
 243
-598
+635
 recovery-period
 recovery-period
 0
@@ -64009,8 +64013,8 @@ mobility
 mobility
 0
 1
-0.6
-0.1
+0.35
+0.01
 1
 NIL
 HORIZONTAL
@@ -64109,7 +64113,7 @@ age-above-70-infectiousness
 age-above-70-infectiousness
 0
 200
-142.0
+157.0
 1
 1
 %
@@ -64124,7 +64128,7 @@ average-infectiousness
 average-infectiousness
 0
 100
-80.0
+19.0
 1
 1
 %
@@ -64153,10 +64157,10 @@ count turtles with [ immunity = 100 ]
 11
 
 SLIDER
-361
-630
-628
-663
+360
+673
+627
+706
 %lock-down
 %lock-down
 0
@@ -64176,7 +64180,7 @@ mask-efficacy
 mask-efficacy
 0
 100
-71.0
+100.0
 1
 1
 %
@@ -64222,42 +64226,54 @@ COVID-19 Spread Simulation
 0.0
 1
 
+SLIDER
+33
+528
+281
+561
+asymptomatic-infection-ratio
+asymptomatic-infection-ratio
+0
+100
+50.0
+1
+1
+%
+HORIZONTAL
+
 @#$#@#$#@
 ## WHAT IS IT?
+This model is build for the final project of course CISC 614. It is a simulation for the COVID-19 mitigation strategies in an urban area.
 
-(a general understanding of what the model is trying to show or explain)
 
 ## HOW IT WORKS
+Each agent represents an individual. When the simulation starts, one of the agent will be set as infected, and the infected agent can moves to transmit the disease to other agents if they get close enough to it.
 
-(what rules the agents use to create the overall behavior of the model)
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+To begin with, please click on the "setup" button or reset the model, so that there will be one infected agent, and the rest of agents are susceptible.
+
+Before starting the model, please make sure the "quarantine" switch is turned off. Then click on the "start/pause" button to kick-off the simulation.
+
+To pause the simulation, simply click on the "start/pause" button again.
+
+The "tick once" button is used to tick one day ahead by each click.
+
+The simulation stops automatically when:
+	(1) all agents are infected 
+	(2) all agents are susceptible or recovered
+
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+Please notice that if the quarantine switch is turned on before the model starts, the disease will not get transmitted among the population. So please make sure it is switched off before starting the model.
+
+Another issue with the quarantine switch is that it works together with the testing slides. So to try with the testing slides, please remember to switch-on the quaratine swtich once a portion of the agents are infected.
+
 
 ## THINGS TO TRY
-
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
-
-## EXTENDING THE MODEL
-
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
-
-## NETLOGO FEATURES
-
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
-
-## RELATED MODELS
-
-(models in the NetLogo Models Library and elsewhere which are of related interest)
-
-## CREDITS AND REFERENCES
-
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+Please try with all the mitigation methods on the panel. All mitigation methods can be applied concurrently.
 @#$#@#$#@
 default
 true
